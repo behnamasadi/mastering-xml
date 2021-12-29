@@ -11,7 +11,7 @@
 <xsl:for-each select="shop/book">
 <tr>
 	<td>
-		<xsl:value-of seclet="title"/>
+		<xsl:value-of seclet="title" />
 	</td>
 </tr>
 </xsl:for-each>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/xsl" href="book.xsl" ?>
+<shop>
+	<!-- Comment: This is a list of books -->
+	<book>
+		<title lang="en">The lord of the ring</title>
+		<ISBN> 123654</ISBN>
+		<author>J. R. R. Tolkien</author>
+		<price>69.69</price>
+	</book>
+	<book>
+		<title>On the Origin of Species</title>
+		<ISBN>987123 </ISBN>
+		<author>Charles Darwin</author>
+		<price>42.0</price>
+	</book>
+	<book>
+		<title lang="fr">UML Distilled</title>
+		<ISBN>789654 </ISBN>
+		<author>Martin Fowler </author>
+		<author>Kendall Scott </author>
+		<price>19.0</price>
+	</book>
+</shop>

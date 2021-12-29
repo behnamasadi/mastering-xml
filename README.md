@@ -1,11 +1,20 @@
 - [XML Introduction](#xml-introduction)
+  * [Terminology](#terminology)
+    + [Markup and Content](#markup-and-content)
+    + [Tag](#tag)
+    + [Element](#element)
+    + [Attribute](#attribute)
+    + [XML Elements vs. Attributes](#xml-elements-vs-attributes)
+  * [XML Prefix and Namespaces](#xml-prefix-and-namespaces)
   * [XML Syntax Rules](#xml-syntax-rules)
   * [Characters and Encoding](#characters-and-encoding)
-  * [Element](#element)
-  * [Attribute](#attribute)
-  * [XML Elements vs. Attributes](#xml-elements-vs-attributes)
-  * [XML Prefix and Namespaces](#xml-prefix-and-namespaces)
   * [CDATA](#cdata)
+  * [XML Parser](#xml-parser)
+  * [Programming Interfaces](#programming-interfaces)
+    + [Document Object Model](#document-object-model)
+    + [Simple API for XML](#simple-api-for-xml)
+    + [XML Data Binding,](#xml-data-binding-)
+    + [Declarative Transformation](#declarative-transformation)
 - [XML DTD](#xml-dtd)
 - [XML XSD](#xml-xsd)
   * [XSD Data Types](#xsd-data-types)
@@ -38,10 +47,21 @@
     + [XPath Axes](#xpath-axes)
   * [XQuery](#xquery)
 - [XSLT](#xslt)
+- [Tools](#tools)
+  * [XML Parser](#xml-parser-1)
+    + [Xerces](#xerces)
+    + [Onsgmls](#onsgmls)
+    + [XML4C](#xml4c)
+  * [Transformation Engines](#transformation-engines)
+    + [Xalan](#xalan)
+
+
 
 # XML Introduction
 
-XML is the abbreviation for eXtensible Markup Language and it has been designed with the purpose of storing and transporting data. XML was created with the goal of being both human and machine readable. XML is just information wrapped in tags. XML, unlike HTML does not use predefined tags.
+XML is the abbreviation for eXtensible Markup Language and it has been designed with the purpose of storing and transporting data. 
+XML was created with the goal of being both human and machine readable. XML is just information wrapped in tags. X
+ML, unlike HTML does not use predefined tags.
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <book>
@@ -63,52 +83,52 @@ XML is extensible, that means you can add the followings:
 	<price>19.0</price>
 </book>
 ```
-## XML Syntax Rules
-An XML document begins with a root element and branches to child elements from there. child elements are allowed to have sub-child elements as well.
-XML documents must contain one root element which is the parent of all other elements:
-```
-<root>
-  <child>
-    <subchild>.....</subchild>
-  </child>
-</root>
-```
-## Characters and Encoding
-Almost every legal Unicode character may appear in an XML document, i.e. `ø,æ,å,ê,è,é`. XML document is **case-sensitive**.
-Escaping characters begin with the character `&` and end with a `;`
+## Terminology
 
-- `&lt;` represents "<";
-- `&gt;` represents ">";
-- `&amp;` represents "&";
-- `&apos;` represents "'";
-- `&quot;` represents '"'.
-White spaces are preserved in XML.
+### Markup and Content
+A markup language is a computer language that defines elements within a document using tags. Markup files contain standard words,
+which is visually distinguishable from how the user typically sees the document. When the document is rendered for display, the markup language doesn't appear. XML (despite its name) is not a markup language. It's a set of rules for building markup languages.
+In XML, strings that constitute markup begin with the character `<` and end with a `>`.
+Strings of characters that are not markup are content.
 
-To declare XML document you should add the following line (**Prolog**) to the top of your document (optional, but if it exists, it must come as the first line in the document):
-`<?xml version = "version_number" encoding = "encoding_declaration" standalone = "standalone_status" ?>`
-
-- Version:	`1.0,  1.1`
-- Encoding:	`UTF-8, UTF-16, ISO-10646-UCS-2, ISO-10646-UCS-4, ISO-8859-1 to ISO-8859-9, ISO-2022-JP, Shift_JIS, EUC-JP`
-- Standalone:		`yes` or `no`
+Refs: [1](https://techterms.com/definition/markup_language#:~:text=A%20markup%20language%20is%20a,rather%20than%20typical%20programming%20syntax.&text=XML%20is%20called%20the%20%22Extensible,a%20wide%20range%20of%20elements.)
+[2](http://sedataglossary.shoutwiki.com/wiki/Markup_language)
 
 
+### Tag
+A tag is a markup construct that begins with `<` and ends with `>`. There are three types of tag:
+1. start-tag, such as <start-tag>;
+2. end-tag, such as </end-tag>;
+3. empty-element tag, such as <empty-element />.
 
+### Element
+XML elements are basic building block of the XML document. An XML element is everything from (including) the element's start tag to (including) the element's end tag. 
 
-## Element
-An element is a logical document component that either begins with a start-tag and ends with a matching end-tag
-
-```
-<element-name attributes="value"> contents</element-name>
-```
-or consists only of an empty-element tag:
-```
-<element-name attributes="value" /> 
-```
 An element can contain:
-- other elements.
-- text.
-- attributes.
-- a mixture of the above (including none of them).
+- Text,for instance:
+```
+    <title>The Matrix Resurrections</title>
+    <director>Lana Wachowski</director>
+    <year>2021 </year>
+    <length>2h 28m</length>
+```
+
+The `<title>, <director>,  <length>` and ` <year>`,  have text content.
+
+- Other elements, For instance:
+
+```
+<movie>
+    <title>The Matrix Resurrections</title>
+</movie>    
+```
+
+- Attributes, For instance:
+```
+  <book category="IT">
+```
+
+- A mixture of the above (including none of them).
 
 ```
 <mediatech>
@@ -118,35 +138,26 @@ An element can contain:
     <year>2021 </year>
     <length>2h 28m</length>
   </movie>
-  <book category="IT">
-    <title>UML distilled</title>
-    <author>Martin Fowler</author>
-    <year>1997</year>
-    <price>39.95</price>
-  </book>
 </mediatech>
 ```
 
-In the example above:
+or consists only of an empty-element tag:
+```
+  <movie category="sci-fi" />
+```
 
-- `<title>, <director>, <author>, <length>, <year>`, and `<price>` have text content because they contain text (like 39.95).
-
-- `<mediatech>, <movie>` and `<book>` have element contents, because they contain elements.
-
-- `<book> and <movie>` have  attribute (category="sci-fi").
-
-
-## Attribute
+### Attribute
 An attribute is a markup construct consisting of a name-value pair that exists within a tag:
 
 `<movie category="sci-fi">`
 
 Attributes can **not** contain tree structures and they are not easily expandable (for future changes)
 Attribute values must always be quoted. Either single or double quotes can be used.
+Some attribute names have been reserved for special purposes. These attributes begin with the prefix xml: 
+`xml:lang,xml:space, xml:link, xml:attribute`
 
 
-
-## XML Elements vs. Attributes
+### XML Elements vs. Attributes
 There are no rules about when to use attributes or when to use elements in XML.
 
 Elements form:
@@ -224,6 +235,55 @@ If you use prefixes in XML, a namespace for the prefix must be defined. The name
 The namespace URI is **not** used by the parser to look up information. The use of a URI serves to give the namespace a unique name. Companies, frequently employ the namespace as a link to a web page containing namespace information. 
 
 
+## XML Syntax Rules
+An XML document begins with a root element and branches to child elements from there. Child elements are allowed to have sub-child elements as well.
+XML documents must contain one root element which is the parent of all other elements:
+```
+<root>
+  <child>
+    <subchild>.....</subchild>
+  </child>
+</root>
+```
+
+- Have a Closing Tag.
+- Have a Root Element.
+- Case Sensitive.
+- Properly Nested Elements.
+- Attribute Values Must Always be Quoted.
+
+**Well Formed**: XML documents that conforms to the syntax rules above.
+
+
+## Characters and Encoding
+Almost every legal Unicode character may appear in an XML document, i.e. 
+`ø,æ,å,ê,è,é`
+
+or for instance the following element:
+
+```
+<俄语 լեզու="ռուսերեն">данные</俄语>
+```
+
+XML document is **case-sensitive**.
+Escaping characters begin with the character `&` and end with a `;`
+
+- `&lt;` represents "<";
+- `&gt;` represents ">";
+- `&amp;` represents "&";
+- `&apos;` represents "'";
+- `&quot;` represents '"'.
+White spaces are preserved in XML.
+
+To declare XML document you should add the following line (**Prolog**) to the top of your document (optional, but if it exists, it must come as the first line in the document):
+`<?xml version = "version_number" encoding = "encoding_declaration" standalone = "standalone_status" ?>`
+
+- Version:	`1.0,  1.1`
+- Encoding:	`UTF-8, UTF-16, ISO-10646-UCS-2, ISO-10646-UCS-4, ISO-8859-1 to ISO-8859-9, ISO-2022-JP, Shift_JIS, EUC-JP`
+- Standalone:		`yes` or `no`
+
+
+
 
 ## CDATA 
 Stands for Character Data and has the following form:
@@ -256,6 +316,84 @@ while (x < len && !done) {
 
 The key differences between CDATA and comments is CDATA is **still part of the document, while a comment is not**.
 
+
+## XML Parser
+XML parser is a tool that reads XML documents and turns the stream of characters from files into an internal representation. 
+`TinyXML, Saxon, Xerces, MSXML` are example XML parser. We will restive them in the following chapters.
+
+## Programming Interfaces
+According to the XML design goals: "It shall be easy to create programs that process XML documents". However there is essentially no detail in the XML specification on how programmers might go about performing such processing.
+
+Existing XML processing APIs tend to fall into the following categories:
+
+### Document Object Model 
+Every XML document has a tree structure, the root element is at the top, and the child elements are related to the root elements through branches, similar to how leaves are connected to trees through branches. It is very easy to traverse all succeeding branches and leaf nodes starting from the root with Tree-traversal APIs from a programming language, for example DOM.
+
+Document Object Model (DOM) is an API that enables you to navigate a document like a tree of node objects.
+
+
+The Document Object Model (DOM) is a cross-platform and language-independent API, that enables you to navigate a document like a tree of node objects.
+
+
+```
+<mediatech>
+  <movie category="sci-fi">
+    <title>The Matrix Resurrections</title>
+    <director>Lana Wachowski</director>
+    <year>2021 </year>
+    <length>2h 28m</length>
+  </movie>
+  <book category="IT">
+    <title>UML distilled</title>
+    <author>Martin Fowler</author>
+    <year>1997</year>
+    <price>39.95</price>
+  </book>
+</mediatech>
+```
+We can create
+
+```  
+object{1}  
+└──mediatech{2}  
+	├──movie {5}
+	│	├── title : The Matrix Resurrections
+	│	├── director : Lana Wachowski
+	│	├── year : 2021
+	│	├── length : 2h 28m
+	│	└──_category : sci-fi
+	│
+	└──book {5}
+		├── title : UML distilled
+		├── author : Martin Fowler
+		├── year : 1997
+		├── price : 69.420
+		└──_category : IT
+   
+```    
+<!-- dot -Tsvg mediatech.dot > mediatech.svg -->
+
+
+![mediatech](images/mediatech.svg)
+
+  
+Tree-traversal and data-binding APIs typically require the use of much more memory, but are often found more convenient for use by programmers
+
+### Simple API for XML
+
+SAX (Simple API for XML): Is a stream-based processor. You only have a tiny part in memory at any time and you "sniff" the XML stream by implementing callback code for events like tagStarted() etc. It uses almost no memory, but you can't do "DOM" stuff, like use xpath or traverse trees.
+
+DOM (Document Object Model): You load the whole thing into memory - it's a massive memory hog. You can blow memory with even medium sized documents. But you can use xpath and traverse the tree etc.
+
+
+Refs: [1](https://stackoverflow.com/questions/6828703/what-is-the-difference-between-sax-and-dom)
+
+### XML Data Binding,
+ which provides an automated translation between an XML document and programming-language objects.
+
+
+### Declarative Transformation 
+languages such as XSLT and XQuery.
 
 # XML DTD
 XML DTD (Document Type Definition) defines what elements are required and what attributes can be set. "Well Formed" XML refers to an XML document having correct syntax. 
@@ -922,8 +1060,21 @@ The transformed XML is:
 [Online XSL Transformer](https://www.freeformatter.com/xsl-transformer.html#ad-output) 
 
 
-Tool
-sudo apt install libtinyxml-dev libxslt1-dev  libxml2-dev libxerces-c-dev libxqilla-dev  libxalan-c-dev
+# Tools
+On Ubuntu, run the following command to set up  tools that we need:
+`sudo apt install libtinyxml-dev libxslt1-dev  libxml2-dev libxerces-c-dev libxqilla-dev  libxalan-c-dev sudo apt install xqilla opensp`
+
+## XML Parser
 
 
+### Xerces
+
+### Onsgmls
+
+
+### XML4C
+
+## Transformation Engines
+
+### Xalan
 

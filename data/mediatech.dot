@@ -1,0 +1,26 @@
+digraph G 
+{
+
+1 [label="mediatech"];
+2 [label="movie"];
+3 [label="title"];
+4 [label="year "];
+5 [label="length"];
+
+6 [label="book"];
+7 [label="title"];
+8 [label="year"];
+9 [label="price"];
+
+1 -> 2;
+2 -> 3;
+2 -> 4;
+2 -> 5;
+
+
+1 -> 6;
+6 -> 7;
+6 -> 8;
+6 -> 9;
+
+}
