@@ -1,0 +1,21 @@
+digraph G 
+{
+
+1 [label="Ancestor"];
+2 [label="Parent"];
+3 [label="Preceding-sibling"];
+4 [label="Contex Node (self)"];
+5 [label="Following-sibling"];
+
+6 [label="Child"];
+7 [label="Desendent"];
+
+
+1 -> 2;
+2 -> 3;
+2 -> 4;
+2 -> 5;
+
+4 -> 6;
+6 -> 7;
+}

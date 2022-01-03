@@ -11,11 +11,12 @@
   * [CDATA](#cdata)
   * [XML Parser](#xml-parser)
   * [Programming Interfaces](#programming-interfaces)
-    + [Document Object Model](#document-object-model)
+    + [Document Object Model  (DOM)](#document-object-model---dom-)
     + [Simple API for XML](#simple-api-for-xml)
-    + [XML Data Binding,](#xml-data-binding-)
+    + [XML Data Binding](#xml-data-binding)
     + [Declarative Transformation](#declarative-transformation)
-- [XML DTD](#xml-dtd)
+- [XML Validation](#xml-validation)
+- [XML Document Type Definition](#xml-document-type-definition)
 - [XML XSD](#xml-xsd)
   * [XSD Data Types](#xsd-data-types)
     + [String](#string)
@@ -55,13 +56,9 @@
   * [Transformation Engines](#transformation-engines)
     + [Xalan](#xalan)
 
-
-
 # XML Introduction
-
-XML is the abbreviation for eXtensible Markup Language and it has been designed with the purpose of storing and transporting data. 
-XML was created with the goal of being both human and machine readable. XML is just information wrapped in tags. X
-ML, unlike HTML does not use predefined tags.
+XML, you hear this word a lot, even if you are not a software developer. XML is almost all over the internet and has made a big impact on it since its introduction in 1998. XML stands for eXtensible Markup Language, and it was created to be a language for transferring, storing, and transforming data which can be easily read and interpreted by both humans and machines.
+This is an example of an XML document, it seems pretty simple, just information about a book wrapped in tags, yet it is very powerful and flexible as we will see in the rest of this video's series. 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <book>
@@ -83,11 +80,38 @@ XML is extensible, that means you can add the followings:
 	<price>19.0</price>
 </book>
 ```
+
+XML has a variety of uses. For instance, in web publishing, `XMLHttpRequest` transfers data between a web browser and a web server and can retrieve data from a URL without having to do a full page refresh. This enables a Web page to update just part of a page without disrupting what the user is doing.
+
+Those web services, that you are using on daily basis on your phone, RSS news feed, your Spotify playlist, SVG files that you use for creating vector graphic design, these are just a few examples of XML applications. The list is long, but I guess that's enough for the introduction.
+
+
+If you get excited by this intro, and it caught your attention, and you are looking for somewhere to start learning XML, then you are in the right place.
+Follow this playlist, and you will learn everything you need to know about XML. 
+
+So what would be covered in this course:
+
+1) In the first chapter, we will have look at XML Terminology. We also introduce XML Syntax Rules, so we can create a well-formed XML document. 
+Then we talk about programming language Interfaces for XML  such as `SAX` and `DOM`, so you can process an XML document in your favorite programming language.
+
+
+2) In the second chapter, we introduce XML Validation and two main tools for validating an XML document. Validation means an XML document is not only well-formed, but it has elements and structure that you want. These two tools are `DTD` and `XSD` (Schema Definition)
+
+3) In the third chapter, we introduce XML Databases, and we will see how can we use `XPath` and `XQuery` to store and retrieve the data from an XML document
+
+
+4) In the chapter four, we introduce `XSLT` (XML EXtensible Stylesheet Language Transformations) which is a language for transforming XML documents into other XML documents/ formats such as HTML, plain text.
+
+5) Finally in the last chapter, we introduce free and open source libraries and tools for parsing, validating, rendering, and basically what we have learned in the previous chapters 
+ with programming languages, C/C++ my choice of course, but you use can any programming language from XML application development
+
 ## Terminology
 
 ### Markup and Content
 A markup language is a computer language that defines elements within a document using tags. Markup files contain standard words,
-which is visually distinguishable from how the user typically sees the document. When the document is rendered for display, the markup language doesn't appear. XML (despite its name) is not a markup language. It's a set of rules for building markup languages.
+rather than typical programming syntax. When the document is rendered for display, the markup language doesn't appear. 
+
+XML (despite its name) is not a markup language. It's a set of rules for building markup languages.
 In XML, strings that constitute markup begin with the character `<` and end with a `>`.
 Strings of characters that are not markup are content.
 
@@ -97,15 +121,15 @@ Refs: [1](https://techterms.com/definition/markup_language#:~:text=A%20markup%20
 
 ### Tag
 A tag is a markup construct that begins with `<` and ends with `>`. There are three types of tag:
-1. start-tag, such as <start-tag>;
-2. end-tag, such as </end-tag>;
-3. empty-element tag, such as <empty-element />.
+1. start-tag, such as `<start-tag>`;
+2. end-tag, such as `</end-tag>`;
+3. empty-element tag, such as` <empty-element />`.
 
 ### Element
 XML elements are basic building block of the XML document. An XML element is everything from (including) the element's start tag to (including) the element's end tag. 
 
 An element can contain:
-- Text,for instance:
+1. Text,for instance:
 ```
     <title>The Matrix Resurrections</title>
     <director>Lana Wachowski</director>
@@ -115,7 +139,7 @@ An element can contain:
 
 The `<title>, <director>,  <length>` and ` <year>`,  have text content.
 
-- Other elements, For instance:
+2. Other elements, For instance:
 
 ```
 <movie>
@@ -123,12 +147,12 @@ The `<title>, <director>,  <length>` and ` <year>`,  have text content.
 </movie>    
 ```
 
-- Attributes, For instance:
+3. Attributes, For instance:
 ```
   <book category="IT">
 ```
 
-- A mixture of the above (including none of them).
+4. A mixture of the above (including none of them).
 
 ```
 <mediatech>
@@ -151,8 +175,8 @@ An attribute is a markup construct consisting of a name-value pair that exists w
 
 `<movie category="sci-fi">`
 
-Attributes can **not** contain tree structures and they are not easily expandable (for future changes)
-Attribute values must always be quoted. Either single or double quotes can be used.
+Attributes can **not** contain tree structures and they are not easily expandable (for future changes).
+Attribute values must always be quoted either single or double quotes.
 Some attribute names have been reserved for special purposes. These attributes begin with the prefix xml: 
 `xml:lang,xml:space, xml:link, xml:attribute`
 
@@ -236,8 +260,12 @@ The namespace URI is **not** used by the parser to look up information. The use 
 
 
 ## XML Syntax Rules
-An XML document begins with a root element and branches to child elements from there. Child elements are allowed to have sub-child elements as well.
-XML documents must contain one root element which is the parent of all other elements:
+- XML is case sensitive.
+- XML document must have a root element.
+- All tags must have a closing.
+- Elements must be nested properly.
+- Attribute values must always be quoted.
+
 ```
 <root>
   <child>
@@ -246,13 +274,9 @@ XML documents must contain one root element which is the parent of all other ele
 </root>
 ```
 
-- Have a Closing Tag.
-- Have a Root Element.
-- Case Sensitive.
-- Properly Nested Elements.
-- Attribute Values Must Always be Quoted.
 
-**Well Formed**: XML documents that conforms to the syntax rules above.
+
+**Well Formed**: XML document that conforms to the syntax rules above.
 
 
 ## Characters and Encoding
@@ -262,10 +286,8 @@ Almost every legal Unicode character may appear in an XML document, i.e.
 or for instance the following element:
 
 ```
-<俄语 լեզու="ռուսերեն">данные</俄语>
+<冰淇淋 フレーバー="ռուսերեն">данные</冰淇淋>
 ```
-
-XML document is **case-sensitive**.
 Escaping characters begin with the character `&` and end with a `;`
 
 - `&lt;` represents "<";
@@ -273,9 +295,11 @@ Escaping characters begin with the character `&` and end with a `;`
 - `&amp;` represents "&";
 - `&apos;` represents "'";
 - `&quot;` represents '"'.
+
 White spaces are preserved in XML.
 
-To declare XML document you should add the following line (**Prolog**) to the top of your document (optional, but if it exists, it must come as the first line in the document):
+The following is called **Prolog**, it is optional, but if it exists, it must come as the first line in the document:
+
 `<?xml version = "version_number" encoding = "encoding_declaration" standalone = "standalone_status" ?>`
 
 - Version:	`1.0,  1.1`
@@ -284,16 +308,15 @@ To declare XML document you should add the following line (**Prolog**) to the to
 
 
 
-
 ## CDATA 
 Stands for Character Data and has the following form:
 ```cpp
 <![CDATA[  your-string  ]]>
 ```
-and it means that the data in between `<![CDATA[` and `]]>` includes data that could be interpreted as XML markup, but should not be. 
+and it means that the data in between `<![CDATA[` and `]]>` could be interpreted as XML markup, but should not be. 
 Any character data (other than `]]>`) can appear within the section without needing to be escaped. i.e. angle brackets `<>` and ampersands `&`.
 
-For instance imagine you have a tutorial page in which your data includes lots of characters that include `&` and `<` but those characters aren't meant to be xml.
+For instance imagine you have a tutorial page in which you have lots of special characters (i.e. `&` and `<`) but those characters aren't meant to be xml.
 Instead of writing it like this:
 ```
 <example-code>
@@ -318,21 +341,19 @@ The key differences between CDATA and comments is CDATA is **still part of the d
 
 
 ## XML Parser
-XML parser is a tool that reads XML documents and turns the stream of characters from files into an internal representation. 
+
+XML parser is a tool that reads XML documents and turns the stream of characters into an internal representation. 
 `TinyXML, Saxon, Xerces, MSXML` are example XML parser. We will restive them in the following chapters.
 
 ## Programming Interfaces
-According to the XML design goals: "It shall be easy to create programs that process XML documents". However there is essentially no detail in the XML specification on how programmers might go about performing such processing.
+According to the XML design goals: "It shall be easy to create programs that can process XML documents". However there is essentially no detail in the XML specification on how programmers might go about performing such processing.
 
-Existing XML processing APIs tend to fall into the following categories:
+Existing XML processing APIs will fall into the following categories.
 
-### Document Object Model 
-Every XML document has a tree structure, the root element is at the top, and the child elements are related to the root elements through branches, similar to how leaves are connected to trees through branches. It is very easy to traverse all succeeding branches and leaf nodes starting from the root with Tree-traversal APIs from a programming language, for example DOM.
+### Document Object Model  (DOM)
+Every XML document has a tree structure, the root element is at the top, and the child elements are related to the root elements through branches, similar to how leaves are connected to trees through branches. It is very easy to traverse all succeeding branches and leaf nodes, starting from the root with Tree-traversal APIs from a programming language.
 
 Document Object Model (DOM) is an API that enables you to navigate a document like a tree of node objects.
-
-
-The Document Object Model (DOM) is a cross-platform and language-independent API, that enables you to navigate a document like a tree of node objects.
 
 
 ```
@@ -381,25 +402,24 @@ Tree-traversal and data-binding APIs typically require the use of much more memo
 
 ### Simple API for XML
 
-SAX (Simple API for XML): Is a stream-based processor. You only have a tiny part in memory at any time and you "sniff" the XML stream by implementing callback code for events like tagStarted() etc. It uses almost no memory, but you can't do "DOM" stuff, like use xpath or traverse trees.
-
-DOM (Document Object Model): You load the whole thing into memory - it's a massive memory hog. You can blow memory with even medium sized documents. But you can use xpath and traverse the tree etc.
-
+SAX (Simple API for XML): Is a stream-based processor. You only have a tiny part in memory at any time and you "sniff" the XML stream by implementing callback code for events like tagStarted() etc. It uses almost no memory, but you can't do "DOM" stuff, like use xpath or  tree traversing.
 
 Refs: [1](https://stackoverflow.com/questions/6828703/what-is-the-difference-between-sax-and-dom)
 
-### XML Data Binding,
- which provides an automated translation between an XML document and programming-language objects.
+### XML Data Binding
+ XML data binding  provides an automated translation between an XML document and programming-language objects.
 
 
 ### Declarative Transformation 
-languages such as XSLT and XQuery.
+Example of declarative transformation are `XSLT` and `XQuery`.
 
-# XML DTD
-XML DTD (Document Type Definition) defines what elements are required and what attributes can be set. "Well Formed" XML refers to an XML document having correct syntax. 
-A DTD-validated XML document is both "Well Formed" and "Valid."
-DTDs check vocabulary and validity of the structure of XML documents against grammatical rules of appropriate XML language.
-An XML DTD can be either specified inside the document, or outside.
+# XML Validation
+
+A well-formed document follows the basic syntactic rules of XML, but most of the time it is not enough for any appliction development, and it should follow a defined structure. For instance, the elements and attributes that can appear in a document, their order and data type, child elements, default and fixed values, etc.
+DTD and  XML schema are two main tools for validating a XML document. DTD is an old solution, and you should use XML schema instead, but for the sake of completeness, We will have a brief look on DTD.
+
+# XML Document Type Definition
+DTD defines what elements are required and what attributes can be set. An XML DTD can be either specified inside the document, or outside.
 
 Example of internal DTD
 
@@ -445,8 +465,7 @@ PCDATA means parse-able text data.
 # XML XSD
 XML XSD (Schema Definition) is also used to describe and validate the structure and the content of XML data.
 XSD dictates what elements and attributes should appear in a document, number and order of them, data types and also default and fixed values for them. 
-The fundamental distinction between DTDs and XML Schema is that XML Schema uses an XML-based syntax, whereas DTDs use a unique syntax that dates back to SGML DTDs. Although DTDs are frequently chastised for requiring users to learn a new grammar, the syntax is actually extremely simple. The converse is true for XML Schema, which is verbose but also uses tags and XML, making the syntax of XML Schema less scary.
-
+The main difference between DTDs and XML Schema is that XML Schema uses an XML-based syntax, whereas DTDs use a unique syntax that dates back to SGML DTDs, so to use the DTD, you should learn a new grammar.
 
 
 ## XSD Data Types
@@ -844,6 +863,9 @@ It is a language for navigating in XML documents.
 
 
 
+
+
+
 ### XPath Path Expressions
 
 All books from root:
@@ -933,6 +955,8 @@ All titles with prices:
 ### XPath Axes
 In Xpath you use location path to define location of a node using absolute or relative path. You can also use **axes** to identify elements by their relationship like
 **parent**, **child**, **siblings**, **ancestors** (a node's parent, parent's parent,...), **descendants** (node's children, children's children,...)
+
+![dom](images/dom.svg)
 
 ```
 /shop/book/preceding-sibling::comment()
