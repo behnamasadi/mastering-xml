@@ -821,13 +821,17 @@ Refs: [1](https://stackoverflow.com/questions/1544200/what-is-difference-between
 
 # XML Databases
 Information in the XML format could be stored in an XML database. 
-<!-- -->
+<!--
 There are two major types of XML databases:
 
 1) XML- enabled
 2) Native XML (NXD)
 
-Example of XML database:
+
+ -->
+ 
+The following is an example of an XML database:
+
 
 ```
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -856,7 +860,7 @@ Example of XML database:
 </shop>	
 ```
 ## XPath
-XPath is made of a path like syntax similar to directory structures, `/, //, ., .., etc.` to select nodes or node-sets in an XML document. 
+XPath is made of a path with the syntax similar to directory structures in Unix-like operating systems, `/, //, ., .., etc.` to select nodes or node-sets in an XML document. 
 It is a language for navigating in XML documents. 
 <!-- In XPath, there are seven kinds of nodes: element, attribute, text, namespace, processing-instruction, comment, and document nodes.
 -->
@@ -866,22 +870,49 @@ It is a language for navigating in XML documents.
 
 
 
-### XPath Path Expressions
+### XPath Expressions
 
 All books from root:
 ```
 /
 ```
 
-Selects all titles in the document from the root:
+```
+    
+The lord of the ring
+ 123654
+J. R. R. Tolkien
+69.69
+
+
+On the Origin of Species
+987123 
+Charles Darwin
+42.0
+
+
+UML Distilled
+789654 
+Martin Fowler 
+Kendall Scott 
+19.0
+```
+
+Selects all titles in the document from the root (nothing will be retuned):
 ```
 /title
 ```
 
-Selects all titles in the document from the current node, no matter where they are:
+Selects all titles in the document from the current node, no matter where they are (`//` means any descendant node of the current node):
 ```
 //title
 ```
+```
+The lord of the ring
+On the Origin of Species
+UML Distilled
+```
+			
 
 Which is equal to:
 ```
@@ -893,9 +924,30 @@ Select the parent of title which is book
 /shop/book/title/..
 ```
 
-First title
 ```
-/shop/book/title[1]
+The lord of the ring
+ 123654
+J. R. R. Tolkien
+69.69
+
+
+On the Origin of Species
+987123 
+Charles Darwin
+42.0
+
+
+UML Distilled
+789654 
+Martin Fowler 
+Kendall Scott 
+19.0
+```
+
+
+Title of the first book:
+```
+/shop/book[1]/title
 ```
 
 
@@ -1011,7 +1063,7 @@ return $x/price
 ```
 
 # XSLT 
-XSLT (XML EXtensible Stylesheet Language Transformations) is a language for transforming XML documents into other XML documents/ formats such as HTML, plain text or XSL Formatting Objects, which may subsequently be converted to other formats, such as PDF, PostScript and PNG.
+XSLT (EXtensible Stylesheet Language Transformations) is a language for transforming XML documents into other XML documents/ formats such as HTML, plain text or XSL Formatting Objects, which may subsequently be converted to other formats, such as PDF, PostScript and PNG.
 XSLT utilized XPath to find information in an XML document.
 `<xsl:stylesheet>` or `<xsl:transform>` is the root element that declares the document to be an XSL style sheet. Either can be used (they are completely synonymous and can be used interchangeably). 
 
@@ -1022,7 +1074,7 @@ or
 ```
 <xsl:transform version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 ```
-
+Since we are interested to process the entire XML database document, we set the match attribute of the template tag into "/".
 For our XML file from previous example
 
 ```

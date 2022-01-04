@@ -4,7 +4,7 @@
 	<!-- Comment: This is a list of books -->
 	<book>
 		<title lang="en">The lord of the ring</title>
-		<ISBN> 123654</ISBN>
+		<ISBN>123654</ISBN>
 		<author>J. R. R. Tolkien</author>
 		<price>69.69</price>
 	</book>
