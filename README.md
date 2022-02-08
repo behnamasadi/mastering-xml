@@ -1,10 +1,10 @@
 - [XML Introduction](#xml-introduction)
-  * [Terminology](#terminology)
-    + [Markup and Content](#markup-and-content)
-    + [Tag](#tag)
-    + [Element](#element)
-    + [Attribute](#attribute)
-    + [XML Elements vs. Attributes](#xml-elements-vs-attributes)
+- [1. XML Document](#1-xml-document)
+  * [Markup and Content](#markup-and-content)
+  * [Tag](#tag)
+  * [Element](#element)
+  * [Attribute](#attribute)
+  * [XML Elements vs. Attributes](#xml-elements-vs-attributes)
   * [XML Prefix and Namespaces](#xml-prefix-and-namespaces)
   * [XML Syntax Rules](#xml-syntax-rules)
   * [Characters and Encoding](#characters-and-encoding)
@@ -15,40 +15,40 @@
     + [Simple API for XML](#simple-api-for-xml)
     + [XML Data Binding](#xml-data-binding)
     + [Declarative Transformation](#declarative-transformation)
-- [XML Validation](#xml-validation)
-- [XML Document Type Definition](#xml-document-type-definition)
-- [XML XSD](#xml-xsd)
-  * [XSD Data Types](#xsd-data-types)
-    + [String](#string)
-    + [Date/ Time/ DateTime/Duration Data Type](#date--time--datetime-duration-data-type)
-      - [Date](#date)
-      - [Time](#time)
-      - [DateTime](#datetime)
-      - [Duration](#duration)
-    + [Numeric Data](#numeric-data)
-      - [Decimal](#decimal)
-      - [Integer](#integer)
-    + [XSD Simple Elements](#xsd-simple-elements)
-      - [Default and Fixed Values for Elements](#default-and-fixed-values-for-elements)
-    + [XSD Attributes](#xsd-attributes)
-      - [Default and Fixed Values for Attributes](#default-and-fixed-values-for-attributes)
-      - [Optional and Required Attributes](#optional-and-required-attributes)
-    + [XSD Complex Element](#xsd-complex-element)
-      - [1. Empty Elements](#1-empty-elements)
-      - [2. Elements Containing Only Other Elements.](#2-elements-containing-only-other-elements)
-      - [3. Elements Containing Only Text](#3-elements-containing-only-text)
-      - [<simple/complexType> and <simple/complexContent>](#-simple-complextype--and--simple-complexcontent-)
-      - [4. Elements Containing Other Elements and Text.](#4-elements-containing-other-elements-and-text)
-    + [XSD Schema](#xsd-schema)
-- [XML Databases](#xml-databases)
+- [2. XML Validation](#2-xml-validation)
+  * [XML Document Type Definition](#xml-document-type-definition)
+  * [XML XSD](#xml-xsd)
+    + [XSD Data Types](#xsd-data-types)
+      - [String](#string)
+      - [Date, Time, DateTime, Duration Data Type](#date--time--datetime--duration-data-type)
+        * [Date](#date)
+        * [Time](#time)
+        * [DateTime](#datetime)
+        * [Duration](#duration)
+      - [Numeric Data](#numeric-data)
+        * [Decimal](#decimal)
+        * [Integer](#integer)
+      - [XSD Simple Elements](#xsd-simple-elements)
+        * [Default and Fixed Values for Elements](#default-and-fixed-values-for-elements)
+      - [XSD Attributes](#xsd-attributes)
+        * [Default and Fixed Values for Attributes](#default-and-fixed-values-for-attributes)
+        * [Optional and Required Attributes](#optional-and-required-attributes)
+      - [XSD Complex Element](#xsd-complex-element)
+        * [1. Empty Elements](#1-empty-elements)
+        * [2. Elements Containing Only Other Elements.](#2-elements-containing-only-other-elements)
+        * [3. Elements Containing Only Text](#3-elements-containing-only-text)
+        * [<simple/complexType> and <simple/complexContent>](#-simple-complextype--and--simple-complexcontent-)
+        * [4. Elements Containing Other Elements and Text.](#4-elements-containing-other-elements-and-text)
+      - [XSD Schema](#xsd-schema)
+- [3. XML Databases](#3-xml-databases)
   * [XPath](#xpath)
-    + [XPath Path Expressions](#xpath-path-expressions)
+    + [XPath Expressions](#xpath-expressions)
     + [XPath Functions](#xpath-functions)
     + [XPath Operators](#xpath-operators)
     + [XPath Axes](#xpath-axes)
   * [XQuery](#xquery)
-- [XSLT](#xslt)
-- [Tools](#tools)
+- [4. XSLT](#4-xslt)
+- [5. API Example and Open source Libraries](#5-api-example-and-open-source-libraries)
   * [XML Parser](#xml-parser-1)
     + [Xerces](#xerces)
     + [Onsgmls](#onsgmls)
@@ -105,9 +105,9 @@ Then we talk about programming language Interfaces for XML  such as `SAX` and `D
 5) Finally in the last chapter, we introduce free and open source libraries and tools for parsing, validating, rendering, and basically what we have learned in the previous chapters 
  with programming languages, C/C++ my choice of course, but you use can any programming language from XML application development
 
-## Terminology
+# 1. XML Document
 
-### Markup and Content
+## Markup and Content
 A markup language is a computer language that defines elements within a document using tags. Markup files contain standard words,
 rather than typical programming syntax. When the document is rendered for display, the markup language doesn't appear. 
 
@@ -119,13 +119,13 @@ Refs: [1](https://techterms.com/definition/markup_language#:~:text=A%20markup%20
 [2](http://sedataglossary.shoutwiki.com/wiki/Markup_language)
 
 
-### Tag
+## Tag
 A tag is a markup construct that begins with `<` and ends with `>`. There are three types of tag:
 1. start-tag, such as `<start-tag>`;
 2. end-tag, such as `</end-tag>`;
 3. empty-element tag, such as` <empty-element />`.
 
-### Element
+## Element
 XML elements are basic building block of the XML document. An XML element is everything from (including) the element's start tag to (including) the element's end tag. 
 
 An element can contain:
@@ -149,7 +149,7 @@ The `<title>, <director>,  <length>` and ` <year>`,  have text content.
 
 3. Attributes, For instance:
 ```
-  <book category="IT">
+  <book category="IT" />
 ```
 
 4. A mixture of the above (including none of them).
@@ -170,7 +170,7 @@ or consists only of an empty-element tag:
   <movie category="sci-fi" />
 ```
 
-### Attribute
+## Attribute
 An attribute is a markup construct consisting of a name-value pair that exists within a tag:
 
 `<movie category="sci-fi">`
@@ -181,8 +181,9 @@ Some attribute names have been reserved for special purposes. These attributes b
 `xml:lang,xml:space, xml:link, xml:attribute`
 
 
-### XML Elements vs. Attributes
-There are no rules about when to use attributes or when to use elements in XML.
+## XML Elements vs. Attributes
+There are no rules about when to use attributes or when to use elements in XML, however if a certain entity is **PART** of the data, then it is recommended to make it an element. For instance the name of the movie is an essential part of the movie data.
+If it provides additional information about the data and it is not actually part of the data (**METADATA**), it is better to make it an attribute. For example, category of a movie is additional information about a movie.
 
 Elements form:
 ```
@@ -204,6 +205,12 @@ Attribute form:
 	<length>2h 28m</length>
 </movie>
 ```
+
+Also putting things in attributes makes for less verbose XML. For instance compare the following with the above one:
+```
+<movie title="The Matrix Resurrections" director="Lana Wachowski" year="2021"/>
+```
+
 
 ## XML Prefix and Namespaces
 suppose you have the followings XML fragments:
@@ -413,12 +420,12 @@ Refs: [1](https://stackoverflow.com/questions/6828703/what-is-the-difference-bet
 ### Declarative Transformation 
 Example of declarative transformation are `XSLT` and `XQuery`.
 
-# XML Validation
+# 2. XML Validation
 
 A well-formed document follows the basic syntactic rules of XML, but most of the time it is not enough for any appliction development, and it should follow a defined structure. For instance, the elements and attributes that can appear in a document, their order and data type, child elements, default and fixed values, etc.
 DTD and  XML schema are two main tools for validating a XML document. DTD is an old solution, and you should use XML schema instead, but for the sake of completeness, We will have a brief look on DTD.
 
-# XML Document Type Definition
+## XML Document Type Definition
 DTD defines what elements are required and what attributes can be set. An XML DTD can be either specified inside the document, or outside.
 
 Example of internal DTD
@@ -462,16 +469,16 @@ The file `address.dtd` contains:
 ```
 PCDATA means parse-able text data.
 
-# XML XSD
+## XML XSD
 XML XSD (Schema Definition) is also used to describe and validate the structure and the content of XML data.
 XSD dictates what elements and attributes should appear in a document, number and order of them, data types and also default and fixed values for them. 
 The main difference between DTDs and XML Schema is that XML Schema uses an XML-based syntax, whereas DTDs use a unique syntax that dates back to SGML DTDs, so to use the DTD, you should learn a new grammar.
 
 
-## XSD Data Types
+### XSD Data Types
 
 The following is the list of most common XSD data types
-### String 
+#### String 
 ```
 <xs:element name="elementName" type="xs:string"/>
 ```
@@ -481,26 +488,26 @@ to trim spaces, line feeds, carriage returns, tabs use `xs:token`
 ```
 [List of all XSD string types](https://www.w3schools.com/xml/schema_dtypes_string.asp)
 
-### Date/ Time/ DateTime/Duration Data Type
+#### Date, Time, DateTime, Duration Data Type
 All field are mandatory.
 
-#### Date
+##### Date
 ```
 <xs:element name="startTime" type="xs:time"/>
 <startDate>YYYY-MM-DD</startDate>
 ```
-#### Time
+##### Time
 ```
 <xs:element name="startDate" type="xs:date"/>
 <startTime>hh:mm:ss</startTime>
 ```
-#### DateTime
+##### DateTime
 
 ```
 <xs:element name="startDateTime" type="xs:dateTime"/>
 <startDateTime>YYYY-MM-DDThh:mm:ss</startDateTime>
 ```
-#### Duration
+##### Duration
 
 ```
 <xs:element name="period" type="xs:duration"/>
@@ -512,13 +519,13 @@ Period of 2 years, 4 months, 7 days, and 1 hours.
 [List of all XSD  date time data types](https://www.w3schools.com/xml/schema_dtypes_date.asp)
 
 
-### Numeric Data
-#### Decimal
+#### Numeric Data
+##### Decimal
 ```
 <xs:element name="size" type="xs:decimal"/>
 <size>69.420</size>
 ```
-#### Integer
+##### Integer
 ```
 <xs:element name="id" type="xs:integer"/>
 <id>10</id>
@@ -534,7 +541,7 @@ Period of 2 years, 4 months, 7 days, and 1 hours.
 
 
 
-### XSD Simple Elements
+#### XSD Simple Elements
 An XML element that just hold text is a simple element. There can't be any additional elements or attributes in it.
 
 Here are some simple XML elements:
@@ -575,7 +582,7 @@ An other example:
 
 
 
-#### Default and Fixed Values for Elements
+##### Default and Fixed Values for Elements
 When no additional value is specified for an element, it is given a default value.
 ```
 <xs:element name="year" type="xs:date" default="2020-01-01"/>
@@ -589,7 +596,7 @@ A fixed value is also automatically assigned to the element, and you cannot spec
 
 
 
-### XSD Attributes
+#### XSD Attributes
 
 The syntax for defining an attribute is:
 
@@ -606,25 +613,25 @@ The corresponding attributes definitions:
 <xs:attribute name="lang" type="xs:string"/>
 ```
 
-#### Default and Fixed Values for Attributes
+##### Default and Fixed Values for Attributes
 Just like elements, when no additional value is specified, it is given a default value.
 ```
 <xs:attribute name="lang" type="xs:string" default="EN"/>
 <xs:attribute name="lang" type="xs:string" fixed="EN"/>
 ```
-#### Optional and Required Attributes
+##### Optional and Required Attributes
 By default, attributes are optional. Use the "use" to indicate that the attribute is required:
 ```
 <xs:attribute name="lang" type="xs:string" use="required"/>
 ```
 
 
-### XSD Complex Element
+#### XSD Complex Element
 An XML element that contains other elements and/or attributes is known as a complicated type element.
 
 There are four kinds of complex elements:
 
-#### 1. Empty Elements
+##### 1. Empty Elements
 ```
 <product id="458184"/>
 ```
@@ -650,7 +657,7 @@ Here with `name="productType"` can be used for other elements
 ```
 
 
-#### 2. Elements Containing Only Other Elements.
+##### 2. Elements Containing Only Other Elements.
 ```
 <book>
 <ISBN> 123654</ISBN>
@@ -736,7 +743,7 @@ You can use `extend` to extend a type. it is analogs to inheritance in OOP:
 
 
 
-#### 3. Elements Containing Only Text
+##### 3. Elements Containing Only Text
 Text-Only elements contains text and attributes, therefore we add a `<simpleContent>` element around the content. 
 When using `<simpleContent>`, you must define an `<extension>` OR a `<restriction>` within the `<simpleContent>` element.
 You can define `restriction` to limit the text:
@@ -766,7 +773,7 @@ You can define `restriction` to limit the text:
     </xs:simpleType>
 ```
 
-#### <simple/complexType> and <simple/complexContent>
+##### <simple/complexType> and <simple/complexContent>
 
 - `<complexType>` and `<simpleType>` both define types.  
 - `<complexType>` can have element and attributes while `<simpleType>` can't.  
@@ -775,10 +782,10 @@ You can define `restriction` to limit the text:
 - when using `<simpleContent>`, you must define an `<extension>` OR a `<restriction>` within the `<simpleContent>` element.
 
 
-#### 4. Elements Containing Other Elements and Text.
+##### 4. Elements Containing Other Elements and Text.
 ```
 <event>
-occured on <date lang="en">01.01.2020</date>
+occurred on <date lang="en">01.01.2020</date>
 </event>
 ```
 Any of above element may or may not contain attributes as well.
@@ -789,7 +796,7 @@ Any of above element may or may not contain attributes as well.
 
 
 
-### XSD Schema
+#### XSD Schema
 The `<schema>` element is the root element of every XML Schema:
 
 ```
@@ -819,7 +826,7 @@ Referencing a Schema in an XML Document:
 Refs: [1](https://stackoverflow.com/questions/1544200/what-is-difference-between-xml-schema-and-dtd)  
 [Online XSD Validator/ Generator](https://www.freeformatter.com/xsd-generator.html#ad-output)
 
-# XML Databases
+# 3. XML Databases
 Information in the XML format could be stored in an XML database. 
 <!--
 There are two major types of XML databases:
@@ -860,15 +867,11 @@ The following is an example of an XML database:
 </shop>	
 ```
 ## XPath
-XPath is made of a path with the syntax similar to directory structures in Unix-like operating systems, `/, //, ., .., etc.` to select nodes or node-sets in an XML document. 
-It is a language for navigating in XML documents. 
+
+XPath (XML Path Language) is a query language  based on the tree representation of the XML document, for selecting nodes and computing values (numbers, strings, Boolean ) . XPath is made of a path with the syntax similar to directory structures in Unix-like operating systems, `/, //, ., .., etc.` to select nodes or node-sets in an XML document. You can navigate in XML documents by using Xpath. 
+
 <!-- In XPath, there are seven kinds of nodes: element, attribute, text, namespace, processing-instruction, comment, and document nodes.
 -->
-
-
-
-
-
 
 ### XPath Expressions
 
@@ -1062,7 +1065,7 @@ where $x/title='On the Origin of Species'
 return $x/price
 ```
 
-# XSLT 
+# 4. XSLT 
 XSLT (EXtensible Stylesheet Language Transformations) is a language for transforming XML documents into other XML documents/ formats such as HTML, plain text or XSL Formatting Objects, which may subsequently be converted to other formats, such as PDF, PostScript and PNG.
 XSLT utilized XPath to find information in an XML document.
 `<xsl:stylesheet>` or `<xsl:transform>` is the root element that declares the document to be an XSL style sheet. Either can be used (they are completely synonymous and can be used interchangeably). 
@@ -1136,7 +1139,7 @@ The transformed XML is:
 [Online XSL Transformer](https://www.freeformatter.com/xsl-transformer.html#ad-output) 
 
 
-# Tools
+# 5. API Example and Open source Libraries 
 On Ubuntu, run the following command to set up  tools that we need:
 `sudo apt install libtinyxml-dev libxslt1-dev  libxml2-dev libxerces-c-dev libxqilla-dev  libxalan-c-dev sudo apt install xqilla opensp`
 
@@ -1153,4 +1156,9 @@ On Ubuntu, run the following command to set up  tools that we need:
 ## Transformation Engines
 
 ### Xalan
+
+
+
+
+ TOC generated [here](https://ecotrust-canada.github.io/markdown-toc/)
 
