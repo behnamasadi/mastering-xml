@@ -493,14 +493,18 @@ All field are mandatory.
 
 ##### Date
 ```
-<xs:element name="startTime" type="xs:time"/>
+<xs:element name="startDate" type="xs:date"/>
 <startDate>YYYY-MM-DD</startDate>
 ```
+
 ##### Time
+
 ```
-<xs:element name="startDate" type="xs:date"/>
+<xs:element name="startTime" type="xs:time"/>
 <startTime>hh:mm:ss</startTime>
+
 ```
+
 ##### DateTime
 
 ```
@@ -645,15 +649,15 @@ Whenever you write XSD element,you can write it specifically for that particular
   </xs:element>
 ```
 
-Here with `name="productType"` can be used for other elements
+Here with `name="productType"` can be used for other elements:
 
 ```
-<xs:element name="product" type="productType" />
-
 <xs:complexType name="productType">
   <xs:attribute name="id" type="xs:integer" />
 </xs:complexType>
 
+
+<xs:element name="product" type="productType" />
 ```
 
 
@@ -681,8 +685,6 @@ Here with `name="productType"` can be used for other elements
 or with a name for the bookType: `name="bookType"`:
 
 ```
-<xs:element name="book" type="bookType" />
-
 <xs:complexType name="bookType">
 	<xs:sequence>
 		<xs:element  name="ISBN" type="xs:integer" />
@@ -691,6 +693,7 @@ or with a name for the bookType: `name="bookType"`:
 	</xs:sequence>
 </xs:complexType>
 
+<xs:element name="book" type="bookType" />
 ```
 
 You can use `extend` to extend a type. it is analogs to inheritance in OOP:
@@ -753,7 +756,13 @@ You can define `restriction` to limit the text:
 ```
 
 ```
-    <xs:element name="drink" type="drinkType"/>
+    <xs:simpleType name="enumStringType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="S"></xs:enumeration>
+            <xs:enumeration value="M"></xs:enumeration>
+            <xs:enumeration value="L"></xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
 
     <xs:complexType name="drinkType" mixed="true">
         <xs:simpleContent>
@@ -763,14 +772,8 @@ You can define `restriction` to limit the text:
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
-
-    <xs:simpleType name="enumStringType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="S"></xs:enumeration>
-            <xs:enumeration value="M"></xs:enumeration>
-            <xs:enumeration value="L"></xs:enumeration>
-        </xs:restriction>
-    </xs:simpleType>
+    
+    <xs:element name="drink" type="drinkType"/>
 ```
 
 ##### <simple/complexType> and <simple/complexContent>
@@ -785,16 +788,22 @@ You can define `restriction` to limit the text:
 ##### 4. Elements Containing Other Elements and Text.
 ```
 <event>
-occurred on <date lang="en">01.01.2020</date>
+occurred on <date>01.01.2020</date> in <location> Springfield  </location>
 </event>
 ```
-Any of above element may or may not contain attributes as well.
+To enable character data to appear between the child-elements of "event", the mixed attribute must be set to "true".
+
+```
+<xs:complexType name="eventType" mixed="true">
+  <xs:sequence>
+    <xs:element name="shipdate" type="xs:date"/>
+    <xs:element name="name" type="xs:string"/>
+  </xs:sequence>
+</xs:complexType>
 
 
-
-
-
-
+<xs:element name="event" type="eventType"/>
+```
 
 #### XSD Schema
 The `<schema>` element is the root element of every XML Schema:
